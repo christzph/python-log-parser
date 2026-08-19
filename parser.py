@@ -1,3 +1,4 @@
+import argparse
 import re
 import sys
 import os
@@ -36,29 +37,46 @@ def analyze_auth_logs(log_path, threshold=3):
     }
 
 def main():
-    log_path = "logs/auth.log"
+    parser = argparse.ArgumentParser(
+        description="Log Parser & SIEM Basico - Analisador de Logs SSH"
+    )
     
-    if not os.path.exists(log_path):
-        print(f"[!] Arquivo de log nao encontrado: {log_path}")
+    parser.add_argument(
+        "-f", "--file",
+        required=True,
+        help="Caminho para o arquivo de log a ser analisado"
+    )
+    parser.add_argument(
+        "-t", "--threshold",
+        type=int,
+        default=3,
+        help="Limite de falhas para considerar Forca Bruta (padrao: 3)"
+    )
+
+    args = parser.parse_args()
+
+    if not os.path.exists(args.file):
+        print(f"[!] Erro: Arquivo de log nao encontrado: {args.file}")
         sys.exit(1)
         
-    print("-" * 65)
-    print("  LOG PARSER - EXTRACAO DE EVENTOS SSH")
-    print("-" * 65)
+    print("=" * 65)
+    print("  LOG PARSER & SIEM BÁSICO - DETECÇÃO DE FORÇA BRUTA")
+    print("=" * 65)
     
-    results = analyze_auth_logs(log_path, threshold=3)
+    # Executa a analise com os parametros passados via CLI
+    results = analyze_auth_logs(args.file, threshold=args.threshold)
 
     print(f"\n[+] Total de falhas de autenticação mapeadas: {results['total_failed']}")
     print(f"[+] Total de logins bem-sucedidos          : {len(results['successful'])}\n")
 
     if results["brute_force"]:
-        print("[ALERTA CRÍTICO] POTENCIAIS ATAQUES DE FORÇA BRUTA DETECTADOS:")
+        print(f"[ALERTA CRÍTICO] POTENCIAIS ATAQUES DE FORÇA BRUTA (>= {args.threshold} falhas):")
         for ip, attempts in results["brute_force"].items():
             print(f"  [!] IP Atacante: {ip} | Total de falhas: {len(attempts)}")
             for att in attempts:
                 print(f"      - Data/Hora: {att['date']} | Usuário alvo: {att['user']}")
     else:
         print("[OK] Nenhuma atividade suspeita de força bruta detectada.")
-        
+
 if __name__ == "__main__":
     main()
