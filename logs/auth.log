@@ -1,0 +1,8 @@
+Oct 10 14:01:12 server1 sshd[1234]: Accepted publickey for admin from 192.168.1.50 port 54321 ssh2
+Oct 10 14:05:01 server1 sshd[1235]: Failed password for root from 203.0.113.42 port 38219 ssh2
+Oct 10 14:05:03 server1 sshd[1236]: Failed password for root from 203.0.113.42 port 38220 ssh2
+Oct 10 14:05:05 server1 sshd[1237]: Failed password for root from 203.0.113.42 port 38221 ssh2
+Oct 10 14:05:08 server1 sshd[1238]: Failed password for root from 203.0.113.42 port 38222 ssh2
+Oct 10 14:05:10 server1 sshd[1239]: Failed password for root from 203.0.113.42 port 38223 ssh2
+Oct 10 14:10:15 server1 sshd[1240]: Accepted password for christzph from 10.0.0.15 port 49152 ssh2
+Oct 10 14:15:22 server1 sshd[1241]: Failed password for invalid user admin from 198.51.100.23 port 40123 ssh2
